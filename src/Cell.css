@@ -1,0 +1,38 @@
+.right__cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16%;
+    height: 177px;
+    background: #1E213A;
+    color: #E7E7EB;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.right__img {
+    width: 56.44px;
+    height: 62px;
+}
+
+.right__maxAndMinTemp {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.right__maxTemp {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    color: #E7E7EB;
+}
+
+.right__minTemp {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    color: #A09FB1;
+}

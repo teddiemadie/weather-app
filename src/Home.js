@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './Home.css'
+import Cell from './Cell'
+import getImagePath from './util'
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Shower from './img/Shower.png'
 import CloudBackground from './img/Cloud-background.png'
-import LightRain from './img/LightRain.png'
-import LightCloud from './img/LightCloud.png'
-import Clear from './img/Clear.png'
-import Hail from './img/Hail.png'
-import Sleet from './img/Sleet.png'
-import Snow from './img/Snow.png'
-import Thunderstorm from './img/Thunderstorm.png'
-import HeavyCloud from './img/HeavyCloud.png'
-import HeavyRain from './img/HeavyRain.png'
 import moment from 'moment'
 
 function Home() {
@@ -23,7 +15,13 @@ function Home() {
     const [location, setLocation] = useState('')
     const [img, setImg] = useState('')
     const arr = new Array()
-    const [arrState, setArrState] = useState('')
+    const [arrState, setArrState] = useState([])
+
+    //declare the right screen's functions
+    const [ws,setWs] = useState('')
+    const [humidity, setHumidity] = useState('')
+    const [visibility, setVisibility] = useState('')
+    const [ap, setAp] = useState('') 
     
     useEffect(() => {
         const getWeather = async () => {
@@ -37,114 +35,40 @@ function Home() {
                 // setWeatherState('Sleet');
                 setTem(res.data.consolidated_weather[0].the_temp)
                 setLocation(res.data.title)
+
+                //the right screen
+                setWs(res.data.consolidated_weather[0].wind_speed)
+                setHumidity(res.data.consolidated_weather[0].humidity)
+                setVisibility(res.data.consolidated_weather[0].visibility)
+                setAp(res.data.consolidated_weather[0].air_pressure)
                 
                 console.warn('weather==>', weatherState)
-                switch(res.data.consolidated_weather[0].weather_state_name) {
-                    case 'Light Rain':
-                        // console.warn('ran light rain')
-                        setImg(LightRain)
-                        break
-                    case 'Light Cloud':
-                        // console.warn('ran light cloud')
-                        setImg(LightCloud)
-                        break
-                    case 'Heavy Cloud':
-                        // console.warn('ran heavy cloud')
-                        setImg(HeavyCloud)
-                        break
-                    case 'Heavy Rain':
-                        // console.warn('ran heavy rain')
-                        setImg(HeavyRain)
-                        break
-                    case 'Thunderstorm':
-                        // console.warn('ran thunderstorm')
-                        setImg(Thunderstorm)
-                        break
-                    case 'Showers':
-                        console.warn('ran shower')
-                        setImg(Shower)
-                        break
-                    case 'Clear':
-                        // console.warn('ran clear')
-                        setImg(Clear)
-                        break
-                    case 'Hail':
-                        // console.warn('ran hail')
-                        setImg(Hail)
-                        break
-                    case 'Sleet':
-                        // console.warn('ran sleet')
-                        setImg(Sleet)
-                        break
-                    case 'Snow':
-                        // console.warn('ran snow')
-                        setImg(Snow)
-                        break
-                                                            
-                }
+                
+                let path = getImagePath(res.data.consolidated_weather[0].weather_state_name)
+                setImg(path)
                                                         
                 //Giai quyet man hinh ben phai
                 console.warn('chay toi day roi')
 
                 for (let i = 1; i<=5; i++) {
-                    const obj = {weather_state: null, image: null, max_temp: null, min_temp: null}
+                    const obj = {day:null, weather_state: null, image: null, max_temp: null, min_temp: null}
+                    obj.day = res.data.consolidated_weather[i].applicable_date
                     obj.weather_state = res.data.consolidated_weather[i].weather_state_name
-                    switch(obj.weather_state) {
-                        case 'Light Rain':
-                            // console.warn('ran light rain')
-                            obj.image = LightRain
-                            break
-                        case 'Light Cloud':
-                            // console.warn('ran light cloud')
-                            obj.image = LightCloud
-                            break
-                        case 'Heavy Cloud':
-                            // console.warn('ran heavy cloud')
-                            obj.image = HeavyCloud
-                            break
-                        case 'Heavy Rain':
-                            // console.warn('ran heavy rain')
-                            obj.image = HeavyRain
-                            break
-                        case 'Thunderstorm':
-                            // console.warn('ran thunderstorm')
-                            obj.image = Thunderstorm
-                            break
-                        case 'Showers':
-                            console.warn('ran shower')
-                            obj.image = Shower
-                            break
-                        case 'Clear':
-                            // console.warn('ran clear')
-                            obj.image = Clear
-                            break
-                        case 'Hail':
-                            // console.warn('ran hail')
-                            obj.image = Hail
-                            break
-                        case 'Sleet':
-                            // console.warn('ran sleet')
-                            obj.image = Sleet
-                            break
-                        case 'Snow':
-                            // console.warn('ran snow')
-                            obj.image = Snow
-                            break 
-                    }
+                    obj.image = getImagePath(obj.weather_state)
                     obj.max_temp = res.data.consolidated_weather[i].max_temp
                     obj.min_temp = res.data.consolidated_weather[i].min_temp
                     arr.push(obj)
                     // console.warn(i)
                 }
 
-                // setArrState(arr)
-                setArrState([{image: Shower}])
+                setArrState(arr)
+                // setArrState([{image: Shower}])
 
 
                 console.warn(arr[0].image)
       };
       getWeather();
-    }, [arrState, tem]);
+    }, []);
 
     // setArrState([{image: Shower}])
 
@@ -183,62 +107,49 @@ function Home() {
 
             <div className='home__right'>
                 <div className='right__upper'>
-                    <p>whats up</p>
+                    
                 </div>
  
                 <div className='right__weatherNextFiveDays'>
-                    <div className='right__cell'>
-                        <p>Tomorrow</p>
-                        <img
-                            className='right__img'
-                            // src = {arrState[0].image}
+                    {arrState.map(i => (
+                        <Cell
+                            day = {moment(i.day).format('ddd, D MMM')}
+                            image = {i.image}
+                            maxTemp = {parseInt(i.max_temp)}
+                            minTemp = {parseInt(i.min_temp)}
                         />
-                        <div className='maxAndMinTem'>
-                            {/* <p>{arr[0].obj.max_temp}</p>
-                            <p>{arr[0].obj.min_temp}</p> */}
-                        </div>
-
-                    </div>
-
-                    <div className='right__cell'>
-                        <p>{moment().add(2, 'days').format('ddd, D MMM')}</p>
-                        <img
-                            className='right__img'
-                            // src = {arrState[1].image}
-                        />
-
-                    </div>
-
-                    <div className='right__cell'>
-                        <p>{moment().add(3, 'days').format('ddd, D MMM')}</p>
-                        <img
-                            className='right__img'
-                            // src = {arrState[2].image}
-                        />
-
-                    </div>
-
-                    <div className='right__cell'>
-                        <p>{moment().add(4, 'days').format('ddd, D MMM')}</p>
-                        <img
-                            className='right__img'
-                            // src = {arrState[3].image}
-                        />
-
-                    </div>
-
-                    <div className='right__cell'>
-                        <p>{moment().add(5, 'days').format('ddd, D MMM')}</p>
-                        <img
-                            className='right__img'
-                            // src = {arrState[4].image}
-                        />
-
-                    </div>
+                    ))}
                 </div>
 
-                <div className='right__highLight'>
+                <div className='right__highLights'>
+                    <p>Today's Highlights</p>
+                    <div className='right__windStatusAndHumidity'>
+                        <div className='right__windStatus'>
+                            <p className='right__title'>Wind status</p>
+                            <big className='right__value'>{parseInt(ws)}</big>
+                            <small className='right__unit'>mph</small>
+                        </div>
 
+                        <div className='right__humidity'>
+                            <p className='right__title'>Humidity</p>
+                            <big className='right__value'>{parseInt(humidity)}</big>
+                            <small className='right__unit'>%</small>
+                        </div>
+                    </div>
+
+                    <div className='right__visibilityAndAirPressure'>
+                        <div className='right__visibility'>
+                            <p className='right__title'>Visibility</p>
+                            <big className='right__value'>{parseInt(visibility)}</big>
+                            <small className='right__unit'> miles</small>
+                        </div>
+
+                        <div className='right__airPressure'>
+                            <p className='right__title'>Air Pressure</p>
+                            <big className='right__value'>{parseInt(ap)}</big>
+                            <small className='right__unit'> mb</small>
+                        </div>
+                    </div>
                 </div>
             </div>
     )
