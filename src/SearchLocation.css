@@ -1,0 +1,11 @@
+.searchLocation {
+    flex: 0.4;
+    background: #1E213A;
+}
+
+.searchBar {
+    width: 268px;
+    height: 48px;
+    border: 1px solid #E7E7EB;
+    box-sizing: border-box;
+}
