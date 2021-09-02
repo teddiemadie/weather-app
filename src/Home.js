@@ -24,37 +24,37 @@ function Home() {
     const [humidity, setHumidity] = useState('')
     const [visibility, setVisibility] = useState('')
     const [ap, setAp] = useState('')
-    const [locationValue, setLocationValue] = useState('')
-    const [locations, setLocations] = useState([
-        {
-            name: 'Ha Noi'
-        },
-        {
-            name: 'Nhat ban'
+
+    const CELSIUS = 'C'
+    const FAHRENHEIT = 'F'
+    const [tempDegree,setTempDegree] = useState(CELSIUS)
+    const handleChangeToF = () => {
+        if (tempDegree !== FAHRENHEIT) {
+            setTempDegree(FAHRENHEIT)
+            setTem(tem*1.8+32)
         }
-    ])
-    const [isShown, setIsShown] = useState(false)
+    }
+
+    const handleChangeToC = () => {
+        if (tempDegree !== CELSIUS) {
+            setTempDegree(CELSIUS)
+            setTem((tem-32)/1.8)
+        }
+    }
+
+    const [leftScreenIsShown, setLeftScreenIsShown] = useState(false)
 
     const showSearchBar = () => {
-        setIsShown(true)
+        setLeftScreenIsShown(true)
     }
 
-    const searchLocation = (event) => {
-        console.log(event.target.value)
-        setLocationValue(event.target.value)
+    //useState to set the id of location dynamicly
+    const [locationId, setLocationId] = useState('1118370')  //default is weather in Tokyo
 
-        // call api
-    }
-
-    const selectLocation = (item) => {
-        console.log(item)
-        setLocationValue(item.name)
-    }
-    
     useEffect(() => {
         const getWeather = async () => {
             const res = await axios.get(
-                "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/1118370"
+                "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/" + locationId
                 );
                 console.warn("★★★★★");
                 console.warn(res.data);
@@ -70,13 +70,13 @@ function Home() {
                 setVisibility(res.data.consolidated_weather[0].visibility)
                 setAp(res.data.consolidated_weather[0].air_pressure)
                 
-                console.warn('weather==>', weatherState)
+                // console.warn('weather==>', weatherState)
                 
                 let path = getImagePath(res.data.consolidated_weather[0].weather_state_name)
                 setImg(path)
                                                         
                 //Giai quyet man hinh ben phai
-                console.warn('chay toi day roi')
+                // console.warn('chay toi day roi')
 
                 for (let i = 1; i<=5; i++) {
                     const obj = {day:null, weather_state: null, image: null, max_temp: null, min_temp: null}
@@ -90,47 +90,33 @@ function Home() {
                 }
 
                 setArrState(arr)
-                // setArrState([{image: Shower}])
 
-
-                console.warn(arr[0].image)
+                // console.warn(arr[0].image)
       };
       getWeather();
     //   console.log('chay vao day')
-    }, []);
-    console.warn('DO AM NE',parseInt(humidity))
+    }, [locationId]);
+    // console.warn('DO AM NE',parseInt(humidity))
     // setArrState([{image: Shower}])
     // let doAm = '63%'
     let humidpercent = humidity + '%'
-    console.warn(humidpercent)
-    console.warn('==> arrState: ', arrState)
+    // console.warn(humidpercent)
+    // console.warn('==> arrState: ', arrState)
     const statusBar = {
         backgroundColor: 'yellow',
         height: '10px',
         width: humidpercent
     }
-    let bgc;
-    if(isShown) {
-        bgc='block'
-        console.warn('chay vao day roi')
-    }else {
-        bgc='none'
-        console.warn('chay vao day roi 1')
-    }
+
     return (
         <div className='home' >
-            
-            <div className='home__left' style={isShown === true ?{display:'none'}: {display:'visibility'}}>
+            {!leftScreenIsShown &&
+                <div className='home__left'>
                
                 <div className='left__upper'>
-                    { isShown === false && (<input onClick={showSearchBar} className='left__search' placeholder = 'Search for places' type='text'/> ) }
-                    {/* { isShown === true && (<input value={locationValue} onChange={searchLocation} />) } */}
-                    {/* { isShown === true && (<SearchLocation onChange={searchLocation} />) } */}
-                    { locations && locations.map((i) => {
-                        return (
-                            <div onClick={() => selectLocation(i)}>{i.name}</div>
-                        )
-                    }) }
+                    { leftScreenIsShown === false && (<input onClick={showSearchBar} className='left__search' placeholder = 'Search for places' type='text'/> ) }
+                    {/* { leftScreenIsShown === true && (<input value={locationValue} onChange={searchLocation} />) } */}
+                    {/* { leftScreenIsShown === true && (<SearchLocation onChange={searchLocation} />) } */}
                     <GpsFixedIcon style={{fontSize: 40, color: '#6E707A'}} />
                 </div>
                 <div className='left__secondPart'>
@@ -147,7 +133,7 @@ function Home() {
 
                 <div className='left__tem'>
                     <big>{parseInt(tem)}</big>
-                    <small>°C</small>
+                    <small>{tempDegree === CELSIUS?'°C':'°F' }</small>
                     <p>{weatherState}</p>
                 </div>
 
@@ -156,13 +142,27 @@ function Home() {
                     <p><LocationOnIcon/> {location} </p>
                 </div>
             </div>
+            }
             {/* style={{display: 'None'}} */}
-            {/* <SearchLocation style={isShown === false ?{display:'none'}: {display:'visibility'}}/> */}
-            <SearchLocation bgc={bgc}/>
+            {/* <SearchLocation style={leftScreenIsShown === false ?{display:'none'}: {display:'visibility'}}/> */}
+            {leftScreenIsShown && 
+                <SearchLocation 
+                    setIsShown = {setLeftScreenIsShown}
+                    setLocationId = {setLocationId}
+                />
+            }
             <div className='home__right'>
                 <div className='right__upper'>
-                    <button className='right__cDegree'>°C</button>
-                    <button className='right__fDegree'>°F</button>
+                    <button 
+                        onClick={handleChangeToC} 
+                        style={tempDegree == CELSIUS?{background:'#E7E7EB',color:'#110E3C'}:{background:'#585676',color:'#E7E7EB'}} 
+                        className='right__cDegree'>°C
+                    </button>
+                    <button 
+                        onClick={handleChangeToF}
+                        style={tempDegree == FAHRENHEIT?{background:'#E7E7EB',color:'#110E3C'}:{background:'#585676',color:'#E7E7EB'}} 
+                        className='right__fDegree'>°F
+                    </button>
                 </div>
  
                 <div className='right__weatherNextFiveDays'>
@@ -172,6 +172,7 @@ function Home() {
                             image = {i.image}
                             maxTemp = {parseInt(i.max_temp)}
                             minTemp = {parseInt(i.min_temp)}
+                            tempDegree = {tempDegree}
                         />
                     ))}
                 </div>

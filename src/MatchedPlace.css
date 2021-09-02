@@ -1,0 +1,19 @@
+.matchedPlace {
+    margin: 30px 47px 0px 47px;
+    width: 367px;
+    height: 64px;
+    border: none;
+    box-sizing: border-box;
+    background: #1E213A;
+    /* filter: opacity(5%); */
+    text-align: left;
+    font-family: Raleway;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    color: #E7E7EB;
+}
+
+.matchedPlace:hover {
+    border: 1px solid #616475;
+}

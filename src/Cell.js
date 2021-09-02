@@ -1,7 +1,7 @@
 import React from 'react'
 import './Cell.css'
 
-function Cell({day,image,maxTemp,minTemp}) {
+function Cell({day,image,maxTemp,minTemp, tempDegree}) {
     return (
         <div className='right__cell'>
             <p>{day}</p>
@@ -10,8 +10,8 @@ function Cell({day,image,maxTemp,minTemp}) {
                 src = {image}
             />
             <div className='right__maxAndMinTemp'>
-                <p className='right__maxTemp'>{maxTemp}°C</p>
-                <p className='right__minTemp'>{minTemp}°C</p>
+                <p className='right__maxTemp'>{tempDegree === 'C' ? maxTemp+'°C': parseInt(maxTemp*1.8+32)+'°F'}</p>
+                <p className='right__maxTemp'>{tempDegree === 'C' ? minTemp+'°C': parseInt(minTemp*1.8+32)+'°F'}</p>
             </div>
 
         </div>

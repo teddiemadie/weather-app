@@ -3,9 +3,59 @@
     background: #1E213A;
 }
 
+.searchBarAndButton {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    margin: 20px 47px 40px 47px;
+}
+
 .searchBar {
     width: 268px;
     height: 48px;
     border: 1px solid #E7E7EB;
     box-sizing: border-box;
+}
+
+.searchBar > ::placeholder {
+    font-family: Raleway;
+    color: #616475;
+}
+
+.searchButton {
+    width: 86px;
+    height: 48px;
+    background: #3C47E9;
+    font-size: 16px;
+    color: #E7E7EB;
+    font-weight: 600;
+    line-height: 19px;
+    margin-left: 12px;
+    border-width: 0px;
+    font-family: Raleway;
+}
+
+.suggestedPlaces {
+    display: flex;
+    flex-direction: column;
+}
+
+.matchedPlace {
+    margin: 30px 47px 0px 47px;
+    width: 367px;
+    height: 64px;
+    border: none;
+    box-sizing: border-box;
+    background: #1E213A;
+    /* filter: opacity(5%); */
+    text-align: left;
+    font-family: Raleway;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    color: #E7E7EB;
+}
+
+.matchedPlace:hover {
+    border: 1px solid #616475;
 }

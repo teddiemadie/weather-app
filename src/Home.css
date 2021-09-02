@@ -247,4 +247,17 @@
     font-size: 30px;
 }
 
+@media only screen and (max-width: 768px) {
+    .home {
+        flex-direction: column;
+    }
+    
+    .left__tem > p {
+        margin-top: 20px;
+    }
 
+    .left__bottom {
+        margin-top: 20px;
+    }
+
+  }
