@@ -1,6 +1,7 @@
 .searchLocation {
-    flex: 0.4;
+    /* flex: 40%; */
     background: #1E213A;
+    /* height: 200%; */
 }
 
 .searchBarAndButton {
@@ -58,4 +59,10 @@
 
 .matchedPlace:hover {
     border: 1px solid #616475;
+}
+
+@media only screen and (max-width: 767px) {
+    .searchLocation {
+        height: 672px;
+    }
 }

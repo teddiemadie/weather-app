@@ -194,10 +194,16 @@ function Home() {
                             <p className='right__title'>Humidity</p>
                             <big className='right__value'>{parseInt(humidity)}</big>
                             <small className='right__unit'>%</small>
-                            <div style={{}} className='right__humidityScale'>
-                                <div style={{ width: '60%', marginTop:'30px', marginLeft:'20%', border: 'solid 1px white', backgroundColor: 'white', borderRadius: '80px'}}>
+                            <div className='right__humidityScale'>
+                                    <div className='right__zeroToHundred'>
+                                        <p>0</p>
+                                        <p>50</p>
+                                        <p>100</p>
+                                    </div>
+                                <div style={{ width: '60%', marginLeft:'20%', border: 'solid 1px white', backgroundColor: 'white', borderRadius: '80px'}}>
                                     <div style={statusBar}></div>
                                 </div>
+                                <p style={{fontSize:'10px',color:'#A09FB1'}}>%</p>
                             </div>
                         </div>
                     </div>
@@ -217,7 +223,7 @@ function Home() {
                     </div>
                 </div>
             </div>
-    )
+    
         </div>
     )
 }

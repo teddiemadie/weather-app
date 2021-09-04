@@ -1,19 +1,18 @@
 .home {
     display: flex;
     flex-direction: row;
-    /* height: 1023px ; */
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .home__left {
-    flex:30%;
     background: #1E213A;
+    flex: 30%;
     height: 100%;
 }
 
 .home__right {
-    flex: 70%;
     background: #100E1D;
+    flex: 70%;
     height: 100%;
 }
 
@@ -53,6 +52,7 @@
 .left__edgeImage {
     /* mix-blend-mode: ; */
     /* filter: blur(8px); */
+    position: relative;
     filter: opacity(5%);
 }
 
@@ -63,7 +63,6 @@
 .left__tem > big {
     color: white;
     font-family: Raleway;
-    font-style: normal;
     font-weight: 500;
     font-size: 144px;
     line-height: 169px;
@@ -84,7 +83,7 @@
 }
 
 .left__bottom {
-    margin-top: 100px;
+    margin-top: auto;
 }
 
 .left__bottom > p {
@@ -161,9 +160,6 @@
 .right__highLights {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    height: 60%;
 }
 
 .right__highLights > p {
@@ -171,29 +167,31 @@
     font-weight: bold;
     font-size: 24px;
     text-align: left;
-    padding-left: 60px;
+    margin-left: 60px;
 }
 
 .right__windStatusAndHumidity {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-left: 60px;
-    padding-right: 60px;
+    margin: 20px 60px;
 }
 
 .right__visibilityAndAirPressure {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-left: 60px;
-    padding-right: 60px;
+    margin: 0px 60px;
+    margin-bottom: 111px;
 }
 
 .right__windStatus {
     background: #1E213A;
-    width: 45%;
-    height: 120%;
+    /* width: 45%;
+    height: 120%; */
+    width: 308px;
+    height: 204px;
+    margin-right: 20px;
 }
 
 .right__windStatusButton {
@@ -211,20 +209,35 @@
 
 .right__humidity {
     background: #1E213A;
-    width: 45%;
-    height: 120%;
+    width: 308px;
+    height: 204px;
+}
+
+.right__zeroToHundred {
+    display: flex;
+    justify-content: space-between;
+    margin: 0% 20%;
+    width: 60%;
+    height: 26px; 
+}
+
+.right__zeroToHundred > p {
+    color:#A09FB1;
+    /* margin: 0 20%; */
+    font-size: 10px;
 }
 
 .right__visibility {
     background: #1E213A;
-    width: 45%;
-    height: 100%;
+    width: 308px;
+    height: 159px;
+    margin-right: 20px;
 }
 
 .right__airPressure {
     background: #1E213A;
-    width: 45%;
-    height: 100%;
+    width: 308px;
+    height: 159px;
 }
 
 .right__title {
@@ -247,9 +260,20 @@
     font-size: 30px;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
     .home {
         flex-direction: column;
+    }
+
+    .left__middleImage {
+       width: 150px;
+       height: 174px;
+       left: 28%; 
+    }
+
+    .left__edgeImage {
+        width: 600px;
+        left: -30%;
     }
     
     .left__tem > p {
@@ -260,4 +284,39 @@
         margin-top: 20px;
     }
 
+    .right__weatherNextFiveDays {
+        flex-wrap: wrap;
+    }
+
+    .right__highLights {
+        background: #100E1D;
+    }
+
+    .right__windStatusAndHumidity {
+        flex-direction: column;
+    }
+
+    .right__visibilityAndAirPressure {
+        flex-direction: column;
+    }
+
+    .right__windStatus {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .right__humidity {
+        width: 100%;
+        /* margin-bottom: 20px; */
+    }
+
+    .right__visibility {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .right__airPressure {
+        width: 100%;
+        margin-bottom: 20px;
+    }
   }
