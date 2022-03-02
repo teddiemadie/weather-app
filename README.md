@@ -1,3 +1,9 @@
+# 外部APIの利用申請
+外部APIを使って天気情報·を取得しています。
+外部APIの利用申請は下記の手順で行います。申請しない場合、天気情報を取得できないです。
+1. URLにアクセスする。
+2. Request temporary access to the demo serverのボタンを押下する。
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
